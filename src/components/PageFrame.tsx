@@ -63,28 +63,28 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function PageFrame() {
+export const PageFrame: React.FC = ({ children }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
           >
-            {/* <MenuIcon /> */}
-          </IconButton>
+            <MenuIcon />
+          </IconButton> */}
           <Typography className={classes.title} variant="h6" noWrap>
-            Material-UI
+            Passwords
           </Typography>
           <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              {/* <SearchIcon /> */}
-            </div>
+            {/* <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div> */}
             <InputBase
               placeholder="Search…"
               classes={{
@@ -96,6 +96,9 @@ export default function PageFrame() {
           </div>
         </Toolbar>
       </AppBar>
+      {children}
     </div>
   );
 }
+
+export default PageFrame;
