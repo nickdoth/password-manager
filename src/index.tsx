@@ -5,11 +5,29 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import { reducerMap } from './reducers';
+import thunk from 'redux-thunk';
+import { BundleService } from './backend';
+
+import dummyServices from './backend/dummy';
+
+export interface ServiceContext {
+    bundleService: BundleService;
+}
+
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+
+const serviceContext: ServiceContext = {
+    bundleService: dummyServices.bundleService,
+};
 
 const store = createStore(
-    combineReducers(reducerMap)
+    combineReducers(reducerMap),
+    composeEnhancers(
+        applyMiddleware(thunk.withExtraArgument(serviceContext))
+    )
 );
 
 ReactDOM.render(<Provider store={store}>
