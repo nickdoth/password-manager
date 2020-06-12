@@ -21,5 +21,5 @@ export interface PasswordService {
     getAllPasswords(kw?: string): Promise<Password[]>;
     addPassword(password: Password): Promise<Password>;
     editPassword(password: Password): Promise<Password>;
-    removePssword(pid: string): Promise<void>;
+    removePassword(pid: string): Promise<void>;
 }

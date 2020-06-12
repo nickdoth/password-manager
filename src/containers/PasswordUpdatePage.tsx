@@ -9,7 +9,7 @@ import { PasswordEdit } from "../components/PasswordEdit";
 import useFormReducer from "../reducers/form-reducer";
 import { Password } from "../backend";
 
-const BLANK_OBJBECT: object = {};
+const BLANK_OBJECT: object = {};
 
 const PasswordUpdatePage = () => {
     const passwordList = useSelector((state: IRootState) => state.passwordList);
@@ -34,7 +34,7 @@ const PasswordUpdatePage = () => {
     );
 
     useEffect(() => {
-        dispatch(passwordEditActions.loaded(isNew ? BLANK_OBJBECT : (passwordList.contents?.filter(n => n.id === id)[0]) ?? BLANK_OBJBECT));
+        dispatch(passwordEditActions.loaded(isNew ? BLANK_OBJECT : (passwordList.contents?.filter(n => n.id === id)[0]) ?? BLANK_OBJECT));
 
         return () => {
             dispatch(passwordEditActions.reset());

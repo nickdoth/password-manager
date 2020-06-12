@@ -30,7 +30,7 @@ export default {
                     dummyData = dummyData.map((n, i) => n.id === password.id ? password : n);
                     return password;
                 },
-                async removePssword(pid: string) {
+                async removePassword(pid: string) {
                     dummyData = dummyData.filter((n, i) => n.id !== pid);
                 },
             }
