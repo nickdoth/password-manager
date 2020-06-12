@@ -62,9 +62,10 @@ interface PageFrameProps {
   onAdd?: () => void;
   onBack?: () => void;
   title: string;
+  edited?: boolean;
 }
 
-export const PageFrame: React.FC<PageFrameProps> = ({ children, onSearch, onSave, onBack, onAdd, title }) => {
+export const PageFrame: React.FC<PageFrameProps> = ({ children, onSearch, onSave, edited, onBack, onAdd, title }) => {
   const classes = useStyles();
   const [showSearch, setShowSearch] = useState(false);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -86,7 +87,7 @@ export const PageFrame: React.FC<PageFrameProps> = ({ children, onSearch, onSave
           
           {showSearch ? null : 
             <Typography className={classes.title} variant="h6" noWrap>
-              {title}
+              {title}{edited ? '*' : ''}
             </Typography>
           }
           <div className={classes.search} style={{ width: showSearch ? '100%' : '0%' }}>

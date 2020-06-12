@@ -7,7 +7,7 @@ export default {
     title: 'PageFrame',
 };
 
-export const pageFrame = () => <PageFrame>
+export const pageFrame = () => <PageFrame title="密碼列表">
     {passwordList()}
 </PageFrame>;
 

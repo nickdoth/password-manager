@@ -7,9 +7,10 @@ import { InputBinder } from "../reducers/form-reducer";
 
 export interface PasswordEditProps {
     bind: InputBinder<Password>;
+    edited: boolean;
 }
 
-export const PasswordEdit = ({ bind }: PasswordEditProps) => {
+export const PasswordEdit = ({ bind, edited }: PasswordEditProps) => {
     return (
         <Grid container direction="column" spacing={1} style={{ padding: 8 }}>
             <Grid item>

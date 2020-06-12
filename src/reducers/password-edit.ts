@@ -1,5 +1,6 @@
 import { GenericState, genericReducer, GenericActions, genericActions, genericActionKeys, genericInitState } from "./commons";
 import { Password } from "../backend";
+import { FormErrorsState } from "./form-reducer";
 
 
 export type AllPasswordEditAction = GenericActions<Contents> | {
@@ -7,14 +8,22 @@ export type AllPasswordEditAction = GenericActions<Contents> | {
 } | {
     type: 'PasswordEdit.EditField',
     payload: Contents,
-};
+} | {
+    type: 'PasswordEdit.AddError',
+    payload: {
+        errors: FormErrorsState<Password>,
+        replace: boolean,
+    }
+}
+;
 
 export type Contents = Partial<Password>;
 
 export interface PasswordEditState extends GenericState<Contents> {
     mode: 'ADD' | 'EDIT';
     uneditedContents?: Contents;
-    fieldErrors: { [key: string]: string };
+    fieldErrors: FormErrorsState<Contents>;
+    edited: boolean;
 }
 
 export const passwordListInitialState: PasswordEditState = {
@@ -23,6 +32,7 @@ export const passwordListInitialState: PasswordEditState = {
     mode: 'ADD',
     uneditedContents: undefined,
     fieldErrors: {},
+    edited: false,
 };
 
 const baseReducer = genericReducer<Contents>('PasswordEdit');
@@ -36,6 +46,7 @@ export function passwordEditReducer(state = passwordListInitialState, action: Al
                 ...baseReducer(state, action),
                 uneditedContents: action.payload?.data,
                 fieldErrors: {},
+                edited: false,
             };
         default:
             return {
@@ -51,7 +62,16 @@ export function passwordEditReducer(state = passwordListInitialState, action: Al
                 contents: {
                     ...state.contents,
                     ...action.payload,
-                }
+                },
+                edited: true,
+            };
+        case 'PasswordEdit.AddError':
+            return {
+                ...state,
+                fieldErrors: action.payload.replace ? action.payload.errors : {
+                    ...state.fieldErrors,
+                    ...action.payload.errors,
+                },
             };
         default:
             return state;
@@ -61,5 +81,6 @@ export function passwordEditReducer(state = passwordListInitialState, action: Al
 export const passwordEditActions = {
     ...genericActions<Contents>('PasswordEdit'),
     reset: () => ({ type: 'PasswordEdit.Reset' }),
-    editField: (key: string, value: string) => ({ type: 'PasswordEdit.EditField', payload: { [key]: value } })
+    editField: (key: string, value: string) => ({ type: 'PasswordEdit.EditField', payload: { [key]: value } }),
+    addFormError: (errors: FormErrorsState<Password>, replace: boolean) => ({ type: 'PasswordEdit.AddError', payload: { errors, replace } }),
 };

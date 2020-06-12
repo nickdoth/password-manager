@@ -7,22 +7,31 @@ import { passwordEditActions } from "../reducers/password-edit";
 import { useParams, useHistory } from "react-router";
 import { PasswordEdit } from "../components/PasswordEdit";
 import useFormReducer from "../reducers/form-reducer";
+import { Password } from "../backend";
 
 const BLANK_OBJBECT: object = {};
 
 const PasswordUpdatePage = () => {
     const passwordList = useSelector((state: IRootState) => state.passwordList);
-    const { mode } = useSelector((state: IRootState) => state.passwordEdit);
+    const { mode, fieldErrors, edited } = useSelector((state: IRootState) => state.passwordEdit);
     const dispatch = useDispatch();
     const { id } = useParams();
     const history = useHistory();
     // const { id } = { id: 'new' };
     const isNew = id === 'new';
 
-    const bind = useFormReducer(
+    const { bindInput: bind, validateAll } = useFormReducer(
         (state: IRootState) => state.passwordEdit.contents ?? {},
         passwordEditActions.editField,
-    ).bindInput;
+        passwordEditActions.addFormError,
+        (state: IRootState) => state.passwordEdit.fieldErrors,
+        [
+            async (values: Partial<Password>) => ({
+                passwordText: values.passwordText ? null : 'Please input password text'
+            }),
+        ]
+        
+    );
 
     useEffect(() => {
         dispatch(passwordEditActions.loaded(isNew ? BLANK_OBJBECT : (passwordList.contents?.filter(n => n.id === id)[0]) ?? BLANK_OBJBECT));
@@ -33,12 +42,14 @@ const PasswordUpdatePage = () => {
 
     }, [ dispatch, id, isNew, passwordList.contents ]);
 
-    return <PageFrame title={`${mode === 'ADD' ? 'New' : 'Edit'} Password`} onSave={() => {
-        dispatch(saveEditingPassword());
-    }} onBack={() => {
+    return <PageFrame title={`${mode === 'ADD' ? 'New' : 'Edit'} Password`} onSave={async () => {
+        if (await validateAll()) {
+            dispatch(saveEditingPassword());
+        }
+    }} edited={edited} onBack={() => {
         history.goBack();
     }}>
-        <PasswordEdit bind={bind} />
+        <PasswordEdit bind={bind} edited={edited} />
     </PageFrame>
 };
 

@@ -11,6 +11,8 @@ import thunk from 'redux-thunk';
 import { BundleService } from './backend';
 
 import dummyServices from './backend/dummy';
+import { selectPassphrase } from './selectors/system-selectors';
+import { systemActions } from './reducers/system';
 
 export interface ServiceContext {
     bundleService: BundleService;
@@ -29,6 +31,17 @@ const store = createStore(
         applyMiddleware(thunk.withExtraArgument(serviceContext))
     )
 );
+
+const savedPh = localStorage.getItem('password-manager.ph');
+if (savedPh) {
+    store.dispatch(systemActions.updatePassphrase(savedPh));
+}
+
+// Save ph
+store.subscribe(() => {
+    const ph = selectPassphrase()(store.getState());
+    ph && localStorage.setItem('password-manager.ph', ph);
+});
 
 ReactDOM.render(<Provider store={store}>
     <App />

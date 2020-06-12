@@ -23,9 +23,13 @@ export function saveEditingPassword(): AppThunkAction {
             const password = state.passwordEdit.contents as Password;
             // dispatch(passwordListActions.loadStart());
             if (password.id) {
+                const data = await bundleService.getPasswordService('', '').editPassword(password);
+                dispatch(passwordEditActions.loaded(data));
             } else {
+                const data = await bundleService.getPasswordService('', '').addPassword(password);
+                dispatch(passwordEditActions.loaded(data));
             }
-            // dispatch(passwordListActions.loaded(data));
+            
         } catch (e) {
             dispatch(passwordEditActions.loadFailed(String(e)));
         }

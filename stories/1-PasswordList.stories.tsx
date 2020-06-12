@@ -10,11 +10,13 @@ export default {
 
 const data = [
   {
+    id: '1',
     recordName: '农业银行',
     username: 'nickwu',
     passwordText: '${pwd1}${pwd2}',
   },
   {
+    id: '2',
     recordName: '建设银行',
     username: 'nickdoth',
     passwordText: '${pwd1:left2}${pwd2:left4}',
