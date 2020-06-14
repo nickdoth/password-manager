@@ -6,6 +6,7 @@ import PasswordUpdatePage from './containers/PasswordUpdatePage';
 import { Router, Route } from 'react-router';
 import { createMemoryHistory } from 'history';
 import { ThemeProvider, Theme, createMuiTheme, colors } from '@material-ui/core';
+import WelcomePage from './containers/WelcomePage';
 
 const history = createMemoryHistory();
 
@@ -21,7 +22,8 @@ export const appTheme: Theme = createMuiTheme({
 
 const App: React.FC = () => {
   return <Router history={history}>
-    <Route exact path="/" component={PasswordListPage} />
+    <Route exact path="/" component={WelcomePage} />
+    <Route exact path="/password" component={PasswordListPage} />
     <Route path="/password/:id" component={PasswordUpdatePage} />
     {/* </Route> */}
   </Router>;

@@ -34,7 +34,7 @@ const PasswordUpdatePage = () => {
     );
 
     useEffect(() => {
-        dispatch(passwordEditActions.loaded(isNew ? BLANK_OBJECT : (passwordList.contents?.filter(n => n.id === id)[0]) ?? BLANK_OBJECT));
+        dispatch(passwordEditActions.loaded(isNew ? BLANK_OBJECT : (passwordList.contents?.filter(n => n._id === id)[0]) ?? BLANK_OBJECT));
 
         return () => {
             dispatch(passwordEditActions.reset());

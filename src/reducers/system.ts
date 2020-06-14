@@ -1,3 +1,5 @@
+import { IRootState } from ".";
+
 export interface SystemState {
     ph?: string | undefined;
 }
@@ -22,3 +24,7 @@ export function systemReducer(state: SystemState = {}, action: AllSystemActions)
 export const systemActions = {
     updatePassphrase: (ph: string | undefined): AllSystemActions => ({ type: 'System.UpdatePassphrase', payload: { ph } }),
 };
+
+export const systemSelectors = {
+    selectPassphrase: () => (state: IRootState) => state.system.ph,
+}

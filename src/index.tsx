@@ -10,9 +10,8 @@ import { reducerMap } from './reducers';
 import thunk from 'redux-thunk';
 import { BundleService } from './backend';
 
-import dummyServices from './backend/dummy';
-import { selectPassphrase } from './selectors/system-selectors';
-import { systemActions } from './reducers/system';
+import { bundleService } from './backend/pouch';
+import { systemActions, systemSelectors } from './reducers/system';
 
 export interface ServiceContext {
     bundleService: BundleService;
@@ -22,7 +21,7 @@ const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
 
 
 const serviceContext: ServiceContext = {
-    bundleService: dummyServices.bundleService,
+    bundleService,
 };
 
 const store = createStore(
@@ -32,15 +31,17 @@ const store = createStore(
     )
 );
 
-const savedPh = localStorage.getItem('password-manager.ph');
+const phStorage: Storage = sessionStorage;
+
+const savedPh = phStorage.getItem('password-manager.ph');
 if (savedPh) {
     store.dispatch(systemActions.updatePassphrase(savedPh));
 }
 
 // Save ph
 store.subscribe(() => {
-    const ph = selectPassphrase()(store.getState());
-    ph && localStorage.setItem('password-manager.ph', ph);
+    const ph = systemSelectors.selectPassphrase()(store.getState());
+    ph && phStorage.setItem('password-manager.ph', ph);
 });
 
 ReactDOM.render(<Provider store={store}>

@@ -1,6 +1,7 @@
 import { AllPasswordAction, passwordListReducer } from "./password-list";
 import { AllPasswordEditAction, passwordEditReducer } from "./password-edit";
 import { AllSystemActions, systemReducer } from "./system";
+import { welcomeReducer, AllWelcomeActions } from "./welcome";
 
 // Compose Interfaces
 export const reducerMap = {
@@ -8,13 +9,15 @@ export const reducerMap = {
     passwordList: passwordListReducer,
     passwordEdit: passwordEditReducer,
     system: systemReducer,
+    welcome: welcomeReducer,
 };
 
 export type IRootState = { [ K in keyof typeof reducerMap ]: ReturnType<typeof reducerMap[K]> };
 export type AllActions = LocaleActions |
     AllPasswordAction |
     AllPasswordEditAction |
-    AllSystemActions
+    AllSystemActions |
+    AllWelcomeActions
 ;
 
 ////////////////////////////////////////////////////////////////////

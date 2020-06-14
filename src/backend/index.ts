@@ -1,8 +1,19 @@
-export interface Password {
-    id: string;
+export interface BaseEntity extends PouchDB.Core.IdMeta, PouchDB.Core.GetMeta {
+    // _id: string;
+    // _rev: string;
+    type: string;
+}
+
+export interface Password extends BaseEntity {
     recordName: string;
     username: string;
     passwordText: string;
+}
+
+export interface CredentialObject extends BaseEntity {
+    now: number;
+    version: 1;
+
 }
 
 export interface BundleService {
@@ -15,6 +26,8 @@ export interface BundleService {
     changePassphrase(bid: string, ph: string, newPh: string): Promise<void>;
 
     getPasswordService(bid: string, ph: string): PasswordService;
+
+    bundleExists(bid: string): Promise<boolean>;
 }
 
 export interface PasswordService {
@@ -23,3 +36,7 @@ export interface PasswordService {
     editPassword(password: Password): Promise<Password>;
     removePassword(pid: string): Promise<void>;
 }
+
+export const backendErrors = {
+    bundleNotFound: () => new Error('ERR_BUNDLE_NOT_FOUND'),
+};

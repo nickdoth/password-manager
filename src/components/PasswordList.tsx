@@ -17,7 +17,7 @@ export default function PasswordList({ passwords, onClickItem }: PasswordListPro
     <div className={classes.root}>
       {/* <Divider /> */}
       <List component="nav" aria-label="secondary mailbox folders">
-        { passwords.map(password => <PasswordListItem onClick={() => onClickItem?.(password.id)} key={password.recordName} {...password} />) }
+        { passwords.map(password => <PasswordListItem onClick={() => onClickItem?.(password._id)} key={password.recordName} {...password} />) }
       </List>
     </div>
   );

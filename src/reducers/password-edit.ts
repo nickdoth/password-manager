@@ -42,7 +42,7 @@ export function passwordEditReducer(state = passwordListInitialState, action: Al
     if (keys.is(action)) switch (action.type) {
         case keys.Loaded:
             return {
-                mode: action.payload?.data?.id ? 'EDIT' : 'ADD',
+                mode: action.payload?.data?._id ? 'EDIT' : 'ADD',
                 ...baseReducer(state, action),
                 uneditedContents: action.payload?.data,
                 fieldErrors: {},
